@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PermissionsApplyDemo</string>
+    <string name="yes">可以</string>
+    <string name="no">不行</string>
+</resources>
