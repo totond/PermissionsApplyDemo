@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class EasyPermissionsActivity extends AppCompatActivity implements View.OnClickListener,EasyPermissions.PermissionCallbacks{
@@ -37,10 +38,6 @@ public class EasyPermissionsActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_check:
-//                String str = PermissionsLogUtils.checkPermissions(this,
-//                        Manifest.permission.RECORD_AUDIO,
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
                 String str = PermissionsLogUtils.easyCheckPermissions(this,
                         Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -63,6 +60,7 @@ public class EasyPermissionsActivity extends AppCompatActivity implements View.O
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.RECORD_AUDIO);
                 break;
+
         }
     }
 
@@ -70,6 +68,7 @@ public class EasyPermissionsActivity extends AppCompatActivity implements View.O
     private void afterGet(){
         Toast.makeText(this, "已获取权限，让我们干爱干的事吧！", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -90,12 +89,14 @@ public class EasyPermissionsActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
-//        StringBuffer sb = new StringBuffer();
-//        for (String str : perms){
-//            sb.append(str);
-//            sb.append("\n");
-//        }
-//        Toast.makeText(this, "已拒绝权限" + sb, Toast.LENGTH_SHORT).show();
+        //处理权限名字字符串
+        StringBuffer sb = new StringBuffer();
+        for (String str : perms){
+            sb.append(str);
+            sb.append("\n");
+        }
+        sb.replace(sb.length() - 2,sb.length(),"");
+
         switch (requestCode){
             case 0:
                 Toast.makeText(this, "已拒绝权限" + perms.get(0), Toast.LENGTH_SHORT).show();
@@ -103,6 +104,16 @@ public class EasyPermissionsActivity extends AppCompatActivity implements View.O
             case 1:
                 Toast.makeText(this, "已拒绝WRITE_EXTERNAL_STORAGE和WRITE_EXTERNAL_STORAGE权限"+ perms.get(0), Toast.LENGTH_SHORT).show();
                 break;
+        }
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            Toast.makeText(this, "已拒绝权限" + sb + "并不再询问" , Toast.LENGTH_SHORT).show();
+            new AppSettingsDialog
+                    .Builder(this)
+                    .setRationale("此功能需要" + sb + "权限，否则无法正常使用，是否打开设置")
+                    .setPositiveButton("好")
+                    .setNegativeButton("不行")
+                    .build()
+                    .show();
         }
     }
 }

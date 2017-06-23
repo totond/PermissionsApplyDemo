@@ -40,9 +40,9 @@ public class RxPermissionsActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_check:
-                String str = PermissionsLogUtils.checkPermissions(this, Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_PHONE_STATE);
+                String str = PermissionsLogUtils.checkPermissions(this,
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
                 tv_log.setText(str);
                 break;
@@ -60,6 +60,7 @@ public class RxPermissionsActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    //请求权限
     private void requestRxPermissions(String... permissions) {
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.request(permissions).subscribe(new Consumer<Boolean>() {

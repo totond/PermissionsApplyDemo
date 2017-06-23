@@ -11,7 +11,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class PermissionsLogUtils {
     private static StringBuffer logStringBuffer = new StringBuffer();
-    // 查看权限集合
+    // 查看权限是否已申请
     public static String checkPermissions(Context context,String... permissions) {
         logStringBuffer.delete(0,logStringBuffer.length());
         for (String permission : permissions) {
@@ -24,6 +24,7 @@ public class PermissionsLogUtils {
     }
 
 
+    //使用EasyPermissions查看权限是否已申请
     public static String easyCheckPermissions(Context context,String ... permissions) {
         logStringBuffer.delete(0,logStringBuffer.length());
         for (String permission : permissions) {

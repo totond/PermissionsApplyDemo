@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btn_check"
-        android:text="checkPermissions"
+        android:text="检查权限"
         />
 
     <Button
